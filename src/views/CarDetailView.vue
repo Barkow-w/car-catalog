@@ -33,7 +33,7 @@ fetchCarDetail()
                 @back="router.back()"/>
     <div class="content">
       <router-link :to="{name: 'CarPost', params: {id: carList.car.brand_id}}">
-        <img class="image" :src="carList.car.images[0].url" alt="">
+        <img class="image" :src="carList.car.images[0].url" alt="" v-if="carList.car.images.length > 0">
       </router-link>
       <div class="info" v-if="carList.user">
         <div class="avatar">
@@ -46,7 +46,6 @@ fetchCarDetail()
 
         <div class="info-car">
           <div class="info-car-name">{{carList.car.name}}</div>
-          <div class="info-car-engine"></div>
         </div>
       </div>
 
@@ -56,30 +55,21 @@ fetchCarDetail()
 </template>
 
 <style scoped>
-.header {
-  position: fixed;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  max-width: 560px;
-  width: 100%;
-  padding: 20px;
-  border-top: 2px solid red;
-  background-color: #e4e4e4;
-}
-
-.name-car {
-  font-size: 20px;
-  font-weight: 700;
-}
 
 .content {
   margin-top: 69px;
+  border-radius: 6px;
+  background-color: #FFFFFF;
 }
 
 .image {
   max-width: 600px;
+  width: 100%;
   cursor: pointer;
+}
+
+.info {
+  padding: 20px;
 }
 
 .avatar {
@@ -104,6 +94,6 @@ fetchCarDetail()
 
 .info-car-name {
   margin-top: 12px;
-  max-width: 145px;
+  max-width: 150px;
 }
 </style>

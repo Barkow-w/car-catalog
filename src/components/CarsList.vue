@@ -7,8 +7,12 @@ import {fetchCarList} from "@/api/api";
 const carItems = ref([]);
 
 const carsList = async () => {
-  carItems.value = await fetchCarList()
-  console.log(carItems.value)
+  try {
+    carItems.value = await fetchCarList();
+    console.log(carItems.value);
+  } catch (error) {
+    console.error("Ошибка при выборке списка автомобилей:", error);
+  }
 }
 carsList()
 
