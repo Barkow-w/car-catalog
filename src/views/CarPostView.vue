@@ -58,7 +58,7 @@ getCarPost()
         </div>
 
         <div class="post-footer">
-          <div class="post-like">Lick: {{ postItem.like_count }}</div>
+          <div class="post-like">Like: {{ postItem.like_count }}</div>
           <div class="post-comment">Comment: {{ postItem.comment_count }}</div>
           <div class="post-date">{{ postItem.created_at }}</div>
         </div>
