@@ -1,15 +1,18 @@
 <script setup lang="ts">
 
-import axios from "axios";
 import {ref} from "vue";
+import {fetchCarList} from "@/api/api";
+
 
 const carItems = ref([]);
 
-axios.get('https://am111.05.testing.place/api/v1/cars/list').then(({data}) => {
-  carItems.value = data;
-});
+const carsList = async () => {
+  carItems.value = await fetchCarList()
+  console.log(carItems.value)
+}
+carsList()
 
-console.log(carItems)
+
 </script>
 
 <template>
@@ -21,10 +24,13 @@ console.log(carItems)
     </div>
     <div class="cars-list">
       <div class="cars-item" v-for="item in carItems" :key="item.id">
-        <img class="car-image" :src="item.image" alt="#">
+        <router-link :to="{ name: 'CarDetail', params: { id: item.id }}">
+          <img class="car-image" :src="item.image" alt="#">
+        </router-link>
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>
@@ -51,6 +57,7 @@ console.log(carItems)
   gap: 15px;
   margin-top: 20px;
 }
+
 .name-block {
   display: flex;
   gap: 12px;
