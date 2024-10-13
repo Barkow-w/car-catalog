@@ -1,12 +1,13 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
-import {fetchCarList} from "@/api/api";
+import {type Ref, ref} from "vue";
+import {fetchCarList} from "@/api/CarList";
+import type {carItemsType} from "@/interface/post";
 
 
-const carItems = ref([]);
+const carItems :Ref<carItemsType> = ref([]);
 
-const carsList = async () => {
+const carList = async () => {
   try {
     carItems.value = await fetchCarList();
     console.log(carItems.value);
@@ -14,7 +15,7 @@ const carsList = async () => {
     console.error("Ошибка при выборке списка автомобилей:", error);
   }
 }
-carsList()
+carList()
 
 
 </script>
@@ -23,11 +24,13 @@ carsList()
   <div class="cars">
     <div class="name-list">
       <div class="name-block">
-        <div class="name-item" v-for="item in carItems" :key="item.id">{{ item.brand_name }}</div>
+        <div class="name-item" v-for="item in carItems" :key="item.id">
+          {{ item.brand_name }}
+        </div>
       </div>
     </div>
-    <div class="cars-list">
-      <div class="cars-item" v-for="item in carItems" :key="item.id">
+    <div class="car-list">
+      <div class="car-item" v-for="item in carItems" :key="item.id">
         <router-link :to="{ name: 'CarDetail', params: { id: item.id }}">
           <img class="car-image" :src="item.image" alt="#">
         </router-link>
@@ -55,7 +58,7 @@ carsList()
   cursor: pointer;
 }
 
-.cars-list {
+.car-list {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
@@ -70,7 +73,7 @@ carsList()
   border-bottom: 1px solid #c7c6c6;
 }
 
-.cars-item {
+.car-item {
   max-width: 500px;
   cursor: pointer;
 }

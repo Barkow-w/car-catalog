@@ -1,13 +1,14 @@
 <script setup lang="ts">
 
 import {getCars} from "@/api/axiosInstance";
-import {ref} from "vue";
+import {type Ref, ref} from "vue";
 import {useRoute, useRouter} from 'vue-router';
 import HeaderNav from "@/components/header-nav/HeaderNav.vue";
+import type {postItemType} from "@/interface/post";
 
 const route = useRoute()
 const router = useRouter()
-const carList = ref({})
+const carItem :Ref<postItemType> = ref({})
 
 
 const fetchCarDetail = async () => {
@@ -15,9 +16,9 @@ const fetchCarDetail = async () => {
 
   try {
     const { data } = await getCars.get(`/car/${cardId}`);
-    carList.value = data;
+    carItem.value = data;
 
-    console.log(carList.value);
+    console.log(carItem.value);
   } catch (error) {
     console.error('Ошибка при получении данных:', error);
   }
@@ -27,25 +28,25 @@ fetchCarDetail()
 </script>
 
 <template>
-  <div class="container" v-if="carList.car && carList.user">
+  <div class="container" v-if="carItem && carItem.car && carItem.user">
     <header-nav
-                :auto-name="carList.user.main_auto_name"
+                :auto-name="carItem.user.main_auto_name"
                 @back="router.back()"/>
     <div class="content">
-      <router-link :to="{name: 'CarPost', params: {id: carList.car.brand_id}}">
-        <img class="image" :src="carList.car.images[0].url" alt="" v-if="carList.car.images.length > 0">
+      <router-link :to="{name: 'CarPost', params: {id: carItem.car.brand_id}}">
+        <img class="image" :src="carItem.car.images[0].url" alt="" v-if="carItem.car.images.length > 0">
       </router-link>
-      <div class="info" v-if="carList.user">
+      <div class="info" v-if="carItem.user">
         <div class="avatar">
-          <img class="icon" :src="carList.user.avatar.url" alt="#">
+          <img class="icon" :src="carItem.user.avatar.url" alt="#">
           <div class="avatar-info">
-            <div class="name">{{ carList.user.username }}</div>
-            <div class="car">{{carList.user.main_auto_name}}</div>
+            <div class="name">{{ carItem.user.username }}</div>
+            <div class="car">{{carItem.user.main_auto_name}}</div>
           </div>
         </div>
 
         <div class="info-car">
-          <div class="info-car-name">{{carList.car.name}}</div>
+          <div class="info-car-name">{{carItem.car.name}}</div>
         </div>
       </div>
 

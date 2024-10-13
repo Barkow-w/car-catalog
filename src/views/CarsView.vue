@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
-import CarsList from "@/components/CarsList.vue";
+import CarList from "@/components/car-list/CarList.vue";
 </script>
 
 <template>
-  <cars-list />
+  <car-list />
 </template>
 
 <style scoped>

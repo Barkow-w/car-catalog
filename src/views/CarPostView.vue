@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {type Ref, ref} from "vue";
 import {getCars} from "@/api/axiosInstance";
 import {useRoute, useRouter} from "vue-router";
 import HeaderNav from "@/components/header-nav/HeaderNav.vue";
+import type {commentUserType, postListType} from "@/interface/post";
 
 const route = useRoute()
 const router = useRouter()
-const postList = ref([])
-const commentsUser = ref({})
+const postList :Ref<postListType> = ref([])
+const commentUser :Ref<commentUserType> = ref({})
 
 const getCarPost = async () => {
   const cardId = route.params.id;
@@ -16,13 +17,12 @@ const getCarPost = async () => {
     postList.value = data.posts;
     console.log(postList.value);
 
-    const commentPromises = postList.value.map(async (post) => {
+    for (const post of postList.value) {
       const {data} = await getCars.get(`/post/${post.id}`);
-      commentsUser.value[post.id] = data.comments;
-    });
+      commentUser.value[post.id] = data.comments;
+    }
 
-    await Promise.all(commentPromises);
-    console.log(commentsUser.value);
+    console.log(commentUser.value);
   } catch (error) {
     console.error('Ошибка при получении постов:', error);
   }
@@ -63,8 +63,8 @@ getCarPost()
           <div class="post-date">{{ postItem.created_at }}</div>
         </div>
 
-        <div class="comments" v-if="commentsUser[postItem.id]">
-          <div class="comments-item" v-for="comment in commentsUser[postItem.id]" :key="comment.id">
+        <div class="comments" v-if="commentUser[postItem.id]">
+          <div class="comments-item" v-for="comment in commentUser[postItem.id]" :key="comment.id">
             <div class="user-avatar">
               <div class="user-info">
                 <img class="user-icon" :src="comment.user.avatar.url" alt="#" v-if="comment.user.avatar">
